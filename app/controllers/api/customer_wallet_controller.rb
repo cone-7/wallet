@@ -1,20 +1,21 @@
-class Api::CustomerController < Api::BaseController
-	before_action :authenticate_customer, except: :create
+class Api::CustomerWalletController < Api::BaseController
+	before_action :authenticate_customer
 	#include ApplicationHelper
 	
 	def index
-		respond_with Customer.all
+		item = Customer.find(params["id"])
+		respond_with item
 	end
 
 	def create
 		# customer = item_params
 		# customer[:pass] = encrypt(customer[:pass])
 		begin
-			customer = Customer.create(item_params)
+			customer = CustomerWallet.create(item_params)
 			render :json => {status: "created", customer: customer}
 		rescue Mongo::Error => e
   		if e.message.include? 'E11000'
-				render :json => {status:"Already exists the email"}
+				render :json => {status:"Already exists a wallet for this user"}
 			end
 		end
 	end 
@@ -24,7 +25,7 @@ class Api::CustomerController < Api::BaseController
 	end 
 
 	def update 
-		item = Customer.find(params["id"])
+		item = CustomerWallet.find(params["id"])
 		item.update_attributes(item_params)
 		render :json => {status:"Updated"}
 	end 
