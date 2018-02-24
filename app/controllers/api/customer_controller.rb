@@ -11,7 +11,7 @@ class Api::CustomerController < Api::BaseController
 		# customer[:pass] = encrypt(customer[:pass])
 		begin
 			customer = Customer.create(item_params)
-			respond_with :api, json: {status: "created", customer: customer}
+			render :json => {status: "created", customer: customer}
 		rescue Mongo::Error => e
   		if e.message.include? 'E11000'
 				render :json => {status:"Already exists the email"}
@@ -24,9 +24,9 @@ class Api::CustomerController < Api::BaseController
 	end 
 
 	def update 
-		item = Customer.find(params["id"]) 
-		item.update_attributes(item_params) 
-		respond_with item, json: item 
+		item = Customer.find(params["id"])
+		item.update_attributes(item_params)
+		render :json => {status:"Updated"}
 	end 
 
 	private def item_params 

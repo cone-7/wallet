@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root to: 'react#index'
   namespace :api do 
   	resources :customer, only: [:index, :create, :destroy, :update] 
+  	resources :customer_wallet, only: [:index, :create, :destroy, :update] 
   end
 
 end
