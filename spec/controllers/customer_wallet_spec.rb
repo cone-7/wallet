@@ -50,6 +50,23 @@ RSpec.describe Api::CustomerWalletController, :type => :controller do
 
   end
 
+  describe "DELETE" do
+    it "index without authentication response 401 status code" do
+      post :destroy, params: {:id => @cust.id}
+      expect(response.status).to eq(401)
+    end
+
+    it "and delete it with login" do
+      updateCustomerW = create(:customer_wallet)
+      request.headers.merge!(@tokentest)
+      puts updateCustomerW.id
+      post :destroy, params: {:id => updateCustomerW.id}
+      res = JSON.parse(response.body)
+      expect(res['status']).to eq "Deleted"
+    end
+
+  end
+
   # describe "POST a customer" do
   #   
 

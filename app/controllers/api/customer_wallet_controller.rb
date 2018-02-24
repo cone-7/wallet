@@ -8,20 +8,25 @@ class Api::CustomerWalletController < Api::BaseController
 	end
 
 	def create
-		# customer = item_params
-		# customer[:pass] = encrypt(customer[:pass])
 		begin
 			customer = CustomerWallet.create(item_params)
 			render :json => {status: "created", customer: customer}
 		rescue Mongo::Error => e
-  		if e.message.include? 'E11000'
+  			if e.message.include? 'E11000'
 				render :json => {status:"Already exists a wallet for this user"}
 			end
 		end
 	end 
 
 	def destroy 
-		respond_with Customer.destroy(params[:id]) 
+		begin
+			CustomerWallet.find(params["id"]).remove	
+			render :json => {status: "Deleted"}
+		rescue Mongoid::Errors::DocumentNotFound => e
+			if e.message.include? 'not found'
+				render :json => {status:'Wallet no encontrada'}
+			end
+		end
 	end 
 
 	def update 
