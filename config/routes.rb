@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api do 
   	resources :customer, only: [:index, :create, :destroy, :update] 
   	resources :customer_wallet, only: [:index, :create, :destroy, :update] 
+  	resources :transaction, only: [:create] 
   end
 
 end
