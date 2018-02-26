@@ -1,15 +1,21 @@
 class Transaction
   include Mongoid::Document
 
-  field :monto, type: Integer
-  validates :monto, :presence => true
+  field :mountToTransfer, type: Float
+  validates :mountToTransfer, :presence => true
   
-  field :comisionP, type: Integer
+  field :comisionP, type: Float
   validates :comisionP, :presence => true
   
-  field :comisionB, type: Integer
+  field :comisionB, type: Float
   validates :comisionB, :presence => true
 
-  embeds_one :customer, as: emisor
-  embeds_one :customer, as: receptor
+  field :receptorWallet, type: String
+  validates :receptorWallet, :presence => true
+
+  field :emisorWallet, type: String
+  validates :emisorWallet, :presence => true
+
+  # embeds_one :customer, as: :emisor
+  # embeds_one :customer, store_as: "receptor"
 end

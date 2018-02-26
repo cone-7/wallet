@@ -19,6 +19,7 @@ class Customer
 
   field :password_digest, :type => String
 
+  # has_many :transactions
   embeds_one :customer_wallet
   index({ email: 1 }, { unique: true })
 end
