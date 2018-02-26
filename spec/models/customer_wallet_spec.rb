@@ -23,14 +23,14 @@ RSpec.describe CustomerWallet, type: :model do
     end
   end
 
-  it "embed customer" do
-    is_expected
-      .to embed_one :customer
-  end
+  # it "embed customer" do
+  #   is_expected
+  #     .to embed_one :customer
+  # end
 
-  it "unique emails" do
-    is_expected
-      .to have_index_for("customer.id": 1)
-  end
+  # it "unique emails" do
+  #   is_expected
+  #     .to have_index_for("customer.id": 1)
+  # end
 
 end
