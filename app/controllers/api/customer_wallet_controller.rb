@@ -9,7 +9,15 @@ class Api::CustomerWalletController < Api::BaseController
 
 	def create
 		begin
-			customer = CustomerWallet.create(item_params)
+			if(params[:customer_wallet][:debitcard] == nil || params[:customer_wallet][:creditcard] == nil || params[:customer_wallet][:debitcard] == '' || params[:customer_wallet][:creditcard] == '')
+				render :json => {status: "error", message: 'Al menos debe haber una tarjeta agregada'}
+				return 
+			end
+			newWallet = item_params
+			newWallet[:customer_id] = current_customer.id
+			newWallet[:balance] = 0
+			newWallet[:typewallet] = 'customer'
+			customer = CustomerWallet.create(newWallet)
 			render :json => {status: "created", customer: customer}
 		rescue Mongo::Error => e
   			if e.message.include? 'E11000'
@@ -36,6 +44,6 @@ class Api::CustomerWalletController < Api::BaseController
 	end 
 
 	private def item_params 
-		params.require(:customer).permit(:name, :password, :email, :securityNumber) 
+		params.require(:customer_wallet).permit(:creditcard, :typewallet, :debitcard) 
 	end 
 end
