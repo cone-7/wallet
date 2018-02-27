@@ -23,6 +23,7 @@ var Body = createReactClass({
 				Email:<input id="email" type="text"></input>
 				Password<input id="password" type="password"></input>
 				<ButtonComponent onClick={this.login}>Enviar</ButtonComponent>
+				<Link to="/singup">Singup</Link>
 			</div> 
 		) 
 	} 

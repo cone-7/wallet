@@ -1,10 +1,19 @@
 var Main = createReactClass({ 
 	render() { 
-		return ( 
-			<div> 
+		// return ( 
+		// 	<div> 
+		// 		<Header/>
+		// 		<Body/>
+		// 	</div> 
+		// )
+		return (
+			<div>
 				<Header/>
-				<Body/>
-			</div> 
+				<Router history={browserHistory}>
+					<Route path="/" component={Body}/>
+					<Route path="/Singup" component={Singup}/>
+				</Router>
+			</div>
 		)
 	} 
 });
