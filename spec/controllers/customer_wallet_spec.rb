@@ -26,9 +26,17 @@ RSpec.describe Api::CustomerWalletController, :type => :controller do
     it "with valid info has to create it" do
       request.headers.merge!(@tokentest)
       createWallet = attributes_for(:customer_wallet)
-      post :create, params: {:customer => createWallet }
+      post :create, params: {:customer_wallet => createWallet }
       res = JSON.parse(response.body)
       expect(res['status']).to eq "created"
+    end
+
+    it "with no cards has not to create it" do
+      request.headers.merge!(@tokentest)
+      createWallet = attributes_for(:customer_wallet, debitcard: nil, creditcard: nil )
+      post :create, params: {:customer_wallet => createWallet }
+      res = JSON.parse(response.body)
+      expect(res['status']).to eq "error"
     end
 
   end
@@ -43,7 +51,7 @@ RSpec.describe Api::CustomerWalletController, :type => :controller do
       updateCustomerW = create(:customer_wallet)
       updateCustomerW['debitcard']['number'] = '1234123312341234'
       request.headers.merge!(@tokentest)
-      post :update, params: {:id => updateCustomerW.id, :customer => updateCustomerW.attributes }
+      post :update, params: {:id => updateCustomerW.id, :customer_wallet => updateCustomerW.attributes }
       res = JSON.parse(response.body)
       expect(res['status']).to eq "Updated"
     end
@@ -59,7 +67,6 @@ RSpec.describe Api::CustomerWalletController, :type => :controller do
     it "and delete it with login" do
       updateCustomerW = create(:customer_wallet)
       request.headers.merge!(@tokentest)
-      puts updateCustomerW.id
       post :destroy, params: {:id => updateCustomerW.id}
       res = JSON.parse(response.body)
       expect(res['status']).to eq "Deleted"
