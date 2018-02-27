@@ -3,7 +3,7 @@ class Api::CustomerWalletController < Api::BaseController
 	#include ApplicationHelper
 	
 	def index
-		item = Customer.find(params["id"])
+		item = CustomerWallet.where(customer_id: current_customer.id)
 		respond_with item
 	end
 

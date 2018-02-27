@@ -26,3 +26,5 @@ var IndexRedirect = ReactRouter.IndexRedirect;
 var hashHistory = ReactRouter.hashHistory;
 var browserHistory = ReactRouter.browserHistory;
 var Router = ReactRouter.Router;
+var Redirect = ReactRouter.Redirect;
+var history = ReactRouter.history

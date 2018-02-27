@@ -12,6 +12,7 @@ var Main = createReactClass({
 				<Router history={browserHistory}>
 					<Route path="/" component={Body}/>
 					<Route path="/Singup" component={Singup}/>
+					<Route path="/Wallet" component={Wallet}/>
 				</Router>
 			</div>
 		)
