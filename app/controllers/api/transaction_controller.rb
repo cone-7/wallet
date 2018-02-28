@@ -24,7 +24,7 @@ class Api::TransactionController < Api::BaseController
 						walletGeneral = CustomerWallet.where(typewallet: "general")
 						transferMountToRecep(walletGeneral, comissionCalculated)
 
-						render :json => {status: "created", customer: newTransaction, balance: customerWallet[0]['balance']}
+						render :json => {status: "created", transaction: newTransaction, balance: customerWallet[0]['balance']}
 					else
 						render :json => {status: "error", message: newTransaction.errors}
 					end
