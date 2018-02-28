@@ -5,15 +5,16 @@ class Wallet extends React.Component {
 	    this.state = {
 	    	cards: {},
 	    	walletInfo: {},
-	    	idW: ''
+	    	idW: '',
 	    }
 	    this.getWalletInfo = this.getWalletInfo.bind(this);
 	    this.createWallet = this.createWallet.bind(this);
 	    this.fondear = this.fondear.bind(this);
+	    this.redirectToTrans = this.redirectToTrans.bind(this)
  	}
 
  	handleChange(propertyName, event) {
-    	const cards = this.state.walletInfo;
+    	const cards = this.state.cards;
     	cards[propertyName] = event.target.value;
     	this.setState({ cards: cards });
   	}
@@ -22,7 +23,8 @@ class Wallet extends React.Component {
 		return fetch('http://localhost:3000/api/customer_wallet', {
 		  method: 'POST',
 		  headers: {
-		    'Content-Type': 'application/json'
+		    'Content-Type': 'application/json',
+		    'Authorization': 'JWT ' + this.props.location.state.jwt
 		  },
 		  body: JSON.stringify({
 				"customer_wallet": {
@@ -33,7 +35,7 @@ class Wallet extends React.Component {
 		}).then(function(response){
 			return response.json();
 		}).then(function(data){
-			console.log(data);
+			self.setState({walletInfo: data.customer_wallet})
 		})
 	}
 
@@ -47,12 +49,11 @@ class Wallet extends React.Component {
 		  method: 'GET',
 		  headers: {
 		    'Content-Type': 'application/json', 
-		    'Authorization': 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTk4MDAxMDAsInN1YiI6eyIkb2lkIjoiNWE5MWE0NjI2OGM3MzYxMTAyNzA5YzBkIn19.2mLdXqjVSUnzJ0Riv7US4ZAGAnnS0bWT8P8-Ktwvclw'
+		    'Authorization': 'JWT ' + self.props.location.state.jwt //JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTk4MDAxMDAsInN1YiI6eyIkb2lkIjoiNWE5MWE0NjI2OGM3MzYxMTAyNzA5YzBkIn19.2mLdXqjVSUnzJ0Riv7US4ZAGAnnS0bWT8P8-Ktwvclw'
 		  }
 		}).then(function(response){
 			return response.json();
 		}).then(function(data){
-			console.log(data)
 			self.setState({walletInfo: data[0], idW: data[0]._id.$oid})
 		})
 	}
@@ -62,7 +63,7 @@ class Wallet extends React.Component {
 		  method: 'PUT',
 		  headers: {
 		    'Content-Type': 'application/json', 
-		    'Authorization': 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTk4MDAxMDAsInN1YiI6eyIkb2lkIjoiNWE5MWE0NjI2OGM3MzYxMTAyNzA5YzBkIn19.2mLdXqjVSUnzJ0Riv7US4ZAGAnnS0bWT8P8-Ktwvclw'
+		    'Authorization': 'JWT ' + self.props.location.state.jwt
 		  },
 		  body: JSON.stringify({
 				"customer_wallet": {
@@ -78,24 +79,35 @@ class Wallet extends React.Component {
 
 	}
 
+	redirectToTrans(){
+		console.log(this.state.jwt+"ssssssss")
+		browserHistory.push({pathname:"/transaction", state: { jwt: self.props.location.state.jwt }})
+	}
+
 	render() { 
 		return ( 
 			<div style={{textAlign:"center"}}> 
-				{this.state.walletInfo.length === 0 ? (
+				{ JSON.stringify(this.state.walletInfo) === JSON.stringify({}) ? (
 					<div>
 						Credit Card: <input id='creditcard' onChange={this.handleChange.bind(this, 'creditcard')} 
-						value={this.state.walletInfo.creditcard} type="text"></input>
+						value={this.state.cards.creditcard} type="number"></input>
 						Debit Card: <input id='debitcard' onChange={this.handleChange.bind(this, 'debitcard')} 
-						value={this.state.walletInfo.debitcard} type="text"></input>
+						value={this.state.cards.debitcard} type="number"></input>
 						<ButtonComponent onClick={this.createWallet}>Crear Cartera</ButtonComponent>
 					</div>
 					) : 
 						(
 						<div>
-							<div>Tiene {this.state.walletInfo.balance	}</div>
+							<div>Tiene {this.state.walletInfo.balance}</div>
 							<ButtonComponent onClick={this.fondear}>Fondear</ButtonComponent>	
 						</div>
 					)
+				}
+				{this.state.walletInfo.balance > 0 ? (
+					//<Link to="/Transaction" params={{ jwt: this.state.jwt }}>Hacer Transaccion</Link>
+					<a style={{cursor:'pointer', textDecoration: 'underline'}} onClick={this.redirectToTrans} >Hacer Transaccion</a>
+					) : 
+					<div></div>
 				}
 			</div> 
 		) 

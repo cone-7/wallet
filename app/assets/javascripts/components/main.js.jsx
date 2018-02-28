@@ -13,6 +13,7 @@ var Main = createReactClass({
 					<Route path="/" component={Body}/>
 					<Route path="/Singup" component={Singup}/>
 					<Route path="/Wallet" component={Wallet}/>
+					<Route path="/Transaction" component={Transaction}/>
 				</Router>
 			</div>
 		)
