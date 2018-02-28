@@ -39,12 +39,13 @@ RSpec.describe Api::TransactionController, type: :controller do
     end
 
     it "creates and comission is charge to emisor" do
-      balanceInitial = @wallet2['balance']
+      balanceInitial = @wallet['balance']
       trans = attributes_for(:transaction, receptorWallet: @wallet2.id, emisorWallet: @wallet.id)
       request.headers.merge!(@tokentest)
       post :create, params: {:transaction => trans, :securityNumber => '1234' }
       res = JSON.parse(response.body)
-      expect(res['balance']).to eq balanceInitial.to_f - 111
+      balanceUpdated = CustomerWallet.find(@wallet.id)
+      expect(balanceUpdated['balance']).to eq @wallet['balance'].to_f - 111
     end
 
   end

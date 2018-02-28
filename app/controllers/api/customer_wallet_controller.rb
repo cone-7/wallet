@@ -39,11 +39,28 @@ class Api::CustomerWalletController < Api::BaseController
 
 	def update 
 		item = CustomerWallet.find(params["id"])
-		item.update_attributes(item_params)
-		render :json => {status:"Updated"}
+		attributesToUpdate = item_params
+		if(params[:typeupdate]=='found')
+			attributesToUpdate[:balance] = item[:balance].to_f + params[:found].to_f
+		end
+		if(params[:typeupdate]=='info')
+			attributesToUpdate[:debitcard] = item[:debitcard]
+			attributesToUpdate[:creditcard] = item[:creditcard]
+		end
+		if(params[:typeupdate]=='withdrawal')
+			if(params[:found].to_f > item.balance.to_f)
+				render :json => {status:"error", message:"Saldo insuficiente"}
+				return
+			end
+			attributesToUpdate[:balance] = item[:balance].to_f - params[:found].to_f
+		end
+		item.update_attributes(attributesToUpdate)
+		render :json => {status:"Updated", item: item}
 	end 
 
 	private def item_params 
-		params.require(:customer_wallet).permit(:creditcard, :typewallet, :debitcard) 
+		params.require(:customer_wallet).permit(:creditcard, :typewallet, :debitcard, :balance, :securityNumber) 
 	end 
 end
+
+
