@@ -43,17 +43,46 @@ RSpec.describe Api::CustomerWalletController, :type => :controller do
 
   describe "PUT" do
     it "index without authentication response 401 status code" do
-      post :update, params: {:id => @cust.id, :customer => @cust.attributes }
+      post :update, params: {:id => @cust.id, :customer_wallet => @cust.attributes }
       expect(response.status).to eq(401)
     end
 
-    it "and update it with login" do
+    it "and update info with login" do
       updateCustomerW = create(:customer_wallet)
       updateCustomerW['debitcard']['number'] = '1234123312341234'
       request.headers.merge!(@tokentest)
-      post :update, params: {:id => updateCustomerW.id, :customer_wallet => updateCustomerW.attributes }
+      post :update, params: {:id => updateCustomerW.id, :customer_wallet => updateCustomerW.attributes, :typeupdate => 'info' }
       res = JSON.parse(response.body)
+      walletUpdated = CustomerWallet.find(updateCustomerW.id)
       expect(res['status']).to eq "Updated"
+    end
+
+    it "and found with login" do
+      updateCustomerW = create(:customer_wallet)
+      updateCustomerW['debitcard']['number'] = '1234123312341234'
+      request.headers.merge!(@tokentest)
+      post :update, params: {:id => updateCustomerW.id, :customer_wallet => updateCustomerW.attributes, :typeupdate => 'found', :found => 2000 }
+      res = JSON.parse(response.body)
+      walletUpdated = CustomerWallet.find(updateCustomerW.id)
+      expect(walletUpdated.balance).to eq updateCustomerW.balance + 2000
+    end
+
+    it "and withdrawal with login" do
+      updateCustomerW = create(:customer_wallet)
+      updateCustomerW['debitcard']['number'] = '1234123312341234'
+      request.headers.merge!(@tokentest)
+      post :update, params: {:id => updateCustomerW.id, :customer_wallet => updateCustomerW.attributes, :typeupdate => 'withdrawal', :found => 500 }
+      walletUpdated = CustomerWallet.find(updateCustomerW.id)
+      expect(walletUpdated.balance).to eq updateCustomerW.balance - 500
+    end
+
+    it "and withdrawal more with login" do
+      updateCustomerW = create(:customer_wallet)
+      updateCustomerW['debitcard']['number'] = '1234123312341234'
+      request.headers.merge!(@tokentest)
+      post :update, params: {:id => updateCustomerW.id, :customer_wallet => updateCustomerW.attributes, :typeupdate => 'withdrawal', :found => 1500 }
+      res = JSON.parse(response.body)
+      expect(res['status']).to eq "error"
     end
 
   end
@@ -71,27 +100,6 @@ RSpec.describe Api::CustomerWalletController, :type => :controller do
       res = JSON.parse(response.body)
       expect(res['status']).to eq "Deleted"
     end
-
   end
-
-  # describe "POST a customer" do
-  #   
-
-  #   it "when the email is already registered has to be error" do
-  #     createCustomer2 = attributes_for(:customer)
-  #     build(:customer)
-  #     post :create, params: {:customer => createCustomer2 }
-  #     res = JSON.parse(response.body)
-  #     expect(res['status']).to eq "Already exists the email"
-  #   end
-
-  #   it "and update it without login" do
-  #     updateCustomer = create(:customer)
-  #     updateCustomer.name = 'unittest'
-  #     post :update, params: {:id => updateCustomer.id, :customer => updateCustomer.attributes }
-  #     expect(response.status).to eq(401)
-  #   end
-
-  # end
 
 end
