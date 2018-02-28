@@ -41,10 +41,8 @@ RSpec.describe Api::CustomerController, :type => :controller do
     end
 
     it "and update it with login" do
-
       updateCustomer = create(:customer)
       updateCustomer.name = 'unittest'
-      puts updateCustomer.id
       request.headers.merge!(@tokentest)
       post :update, params: {:id => updateCustomer.id, :customer => updateCustomer.attributes }
       res = JSON.parse(response.body)
