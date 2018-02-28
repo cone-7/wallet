@@ -31,6 +31,14 @@ RSpec.describe Api::CustomerWalletController, :type => :controller do
       expect(res['status']).to eq "created"
     end
 
+    it "with no cards has not to create it" do
+      request.headers.merge!(@tokentest)
+      createWallet = attributes_for(:customer_wallet, debitcard: nil, creditcard: nil )
+      post :create, params: {:customer_wallet => createWallet }
+      res = JSON.parse(response.body)
+      expect(res['status']).to eq "error"
+    end
+
   end
 
   describe "PUT" do
