@@ -6,6 +6,7 @@ class Wallet extends React.Component {
 	    	cards: {},
 	    	walletInfo: {},
 	    	idW: '',
+	    	found: ''
 	    }
 	    this.getWalletInfo = this.getWalletInfo.bind(this);
 	    this.createWallet = this.createWallet.bind(this);
@@ -14,10 +15,14 @@ class Wallet extends React.Component {
  	}
 
  	handleChange(propertyName, event) {
+ 		if(propertyName==='found')
+ 			this.setState({found: event.target.value})
+ 		else{
     	const cards = this.state.cards;
     	cards[propertyName] = event.target.value;
     	this.setState({ cards: cards });
-  	}
+    }
+  }
 
 	createWallet() {
 		return fetch('http://localhost:3000/api/customer_wallet', {
@@ -59,6 +64,7 @@ class Wallet extends React.Component {
 	}
 
 	fondear(){
+		self = this;
 		fetch('http://localhost:3000/api/customer_wallet/'+this.state.idW, {
 		  method: 'PUT',
 		  headers: {
@@ -67,21 +73,25 @@ class Wallet extends React.Component {
 		  },
 		  body: JSON.stringify({
 				"customer_wallet": {
-					"balance": 2000,
-					"typeUpdate": 'fondeo'
-				}
+					"balance": self.state.found,
+				},
+				"typeUpdate": 'fondeo'
 			})
 		}).then(function(response){
 			return response.json();
 		}).then(function(data){
+			self.setState({walletInfo: data.item, found: ''})
 			console.log(data);
 		})
 
 	}
 
 	redirectToTrans(){
-		console.log(this.state.jwt+"ssssssss")
 		browserHistory.push({pathname:"/transaction", state: { jwt: self.props.location.state.jwt }})
+	}
+
+	redirectRetiro(){
+		browserHistory.push({pathname:"/withdrawal", state: { jwt: self.props.location.state.jwt }})	
 	}
 
 	render() { 
@@ -108,6 +118,8 @@ class Wallet extends React.Component {
 									<div>Tiene {this.state.walletInfo.balance}</div>
 								</div>
 								<div>
+									Monto: <input id='montoFondo' onChange={this.handleChange.bind(this, 'found')} 
+										value={this.state.found} type="number"></input>
 									<ButtonComponent onClick={this.fondear}>Fondear</ButtonComponent>	
 								</div>
 							</div>
@@ -115,7 +127,10 @@ class Wallet extends React.Component {
 				}
 				{this.state.walletInfo.balance > 0 ? (
 					//<Link to="/Transaction" params={{ jwt: this.state.jwt }}>Hacer Transaccion</Link>
+					<div>
 					<a style={{cursor:'pointer', textDecoration: 'underline'}} onClick={this.redirectToTrans} >Hacer Transaccion</a>
+					<a style={{cursor:'pointer', textDecoration: 'underline'}} onClick={this.redirectRetiro} >Retirar</a>
+					</div>
 					) : 
 					<div></div>
 				}

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   	resources :customer, only: [:index, :create, :destroy, :update] 
   	resources :customer_wallet, only: [:index, :create, :destroy, :update] 
   	resources :transaction, only: [:create] 
+  	resources :transfer_system, only: [:create] 
   end
 
 end
