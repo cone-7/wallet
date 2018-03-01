@@ -14,5 +14,17 @@
 //= require turbolinks
 //= require react
 //= require react_ujs
+//= require ReactRouter
 //= require components
 //= require_tree .
+
+var Route = ReactRouter.Route;
+var Link = ReactRouter.Link;
+var IndexRoute = ReactRouter.IndexRoute;
+var IndexLink = ReactRouter.IndexLink;
+var IndexRedirect = ReactRouter.IndexRedirect;
+var hashHistory = ReactRouter.hashHistory;
+var browserHistory = ReactRouter.browserHistory;
+var Router = ReactRouter.Router;
+var Redirect = ReactRouter.Redirect;
+var history = ReactRouter.history

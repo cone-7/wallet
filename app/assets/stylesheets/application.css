@@ -13,3 +13,26 @@
  *= require_tree .
  *= require_self
  */
+
+.header{
+	background-color: #4281f4;
+	color: white;
+	text-align: center;
+    height: 100px;
+    /* position: absolute; */
+    width: 100%;
+    padding-top: 10px;
+    margin-top: -8px;
+}
+
+.body{
+	padding: 20px;
+	text-align:center
+
+}
+
+.singleElement{
+	position: relative;
+	padding: 10px;
+	display: block;
+}
