@@ -86,21 +86,31 @@ class Wallet extends React.Component {
 
 	render() { 
 		return ( 
-			<div style={{textAlign:"center"}}> 
+			<div className="body"> 
 				{ JSON.stringify(this.state.walletInfo) === JSON.stringify({}) ? (
-					<div>
-						Credit Card: <input id='creditcard' onChange={this.handleChange.bind(this, 'creditcard')} 
-						value={this.state.cards.creditcard} type="number"></input>
-						Debit Card: <input id='debitcard' onChange={this.handleChange.bind(this, 'debitcard')} 
-						value={this.state.cards.debitcard} type="number"></input>
-						<ButtonComponent onClick={this.createWallet}>Crear Cartera</ButtonComponent>
+					<div >
+						<div className="singleElement">
+							Credit Card: <input id='creditcard' onChange={this.handleChange.bind(this, 'creditcard')} 
+							value={this.state.cards.creditcard} type="number"></input>
+						</div>
+						<div className="singleElement">
+							Debit Card: <input id='debitcard' onChange={this.handleChange.bind(this, 'debitcard')} 
+							value={this.state.cards.debitcard} type="number"></input>
+						</div>
+						<div className="singleElement">
+							<ButtonComponent onClick={this.createWallet}>Crear Cartera</ButtonComponent>
+						</div>
 					</div>
 					) : 
 						(
-						<div>
-							<div>Tiene {this.state.walletInfo.balance}</div>
-							<ButtonComponent onClick={this.fondear}>Fondear</ButtonComponent>	
-						</div>
+							<div>
+								<div className="singleElement">
+									<div>Tiene {this.state.walletInfo.balance}</div>
+								</div>
+								<div>
+									<ButtonComponent onClick={this.fondear}>Fondear</ButtonComponent>	
+								</div>
+							</div>
 					)
 				}
 				{this.state.walletInfo.balance > 0 ? (

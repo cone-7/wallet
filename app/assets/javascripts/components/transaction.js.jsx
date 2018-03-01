@@ -44,15 +44,25 @@ class Transaction extends React.Component {
 	
 	render() { 
 		return ( 
-			<div style={{textAlign:"center"}}> 
-				Transaction<br/>
+			<div className="body"> 
+				<div className="singleElement">
+				Transaction
+				</div>
+				<div className="singleElement">
 				Monto: <input id='mountToTransfer' onChange={this.handleChange.bind(this, 'mountToTransfer')} 
 					value={this.state.transaction.mountToTransfer} type="text"></input>
+				</div>
+				<div className="singleElement">	
 				Wallet receptora: <input id='receptorWallet' onChange={this.handleChange.bind(this, 'receptorWallet')} 
 					value={this.state.transaction.receptorWallet} type="text"></input>
+				</div>
+				<div className="singleElement">
 				Numero de Seguridad: <input id='securityNumber' onChange={this.handleChange.bind(this, 'securityNumber')} 
 					value={this.state.transaction.securityNumber} type="number"></input>
+				</div>
+				<div className="singleElement">
 				<ButtonComponent onClick={this.makeTransaction}>Transferir</ButtonComponent>
+				</div>
 			</div> 
 		) 
 	} 

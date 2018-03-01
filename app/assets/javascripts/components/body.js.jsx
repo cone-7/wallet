@@ -35,12 +35,18 @@ class Body extends React.Component {
 
 	render() { 
 		return ( 
-			<div style={{textAlign:"center"}}> 
-				Email:<input id='email' onChange={this.handleChange.bind(this, 'email')} 
-					value={this.state.loginInfo.email} type="text"></input>
-				Password<input id='pass' onChange={this.handleChange.bind(this, 'pass')} 
-					value={this.state.loginInfo.pass} type="password"></input>
-				<ButtonComponent onClick={this.login}>Enviar</ButtonComponent>
+			<div className="body" style={{}}> 
+				<div className="singleElement">
+					Email:<input id='email' onChange={this.handleChange.bind(this, 'email')} 
+						value={this.state.loginInfo.email} type="text"></input>
+				</div>	
+				<div className="singleElement">
+					Password<input id='pass' onChange={this.handleChange.bind(this, 'pass')} 
+						value={this.state.loginInfo.pass} type="password"></input>
+				</div>
+				<div className="singleElement">
+					<ButtonComponent onClick={this.login}>Enviar</ButtonComponent>
+				</div>
 				<Link to="/singup">Singup</Link>
 			</div> 
 		) 
