@@ -1,25 +1,35 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Para ejecutar esta aplicacion se debe contar con:
 
-Things you may want to cover:
+**Ruby**
 
-* Ruby version
+**Rails** version 5.1.5
 
-* System dependencies
+**MongoDB** (se probo con la version 3.6)
 
-* Configuration
+**Bundle** - sino se tiene instalado puede utilizar el siguiente codigo:
+  `gem install bundler`
 
-* Database creation
+**Rake** - sino se tiene instalado puede utilizar el siguiente codigo:
+  `gem install rake`
+  
+  
+  
+  Al contar con las herramietas necesarias se deben ejecutar los siguiente comandos
 
-* Database initialization
+1.- Para instalar la gemas necesarias para el proyecto ejecutar
 
-* How to run the test suite
+`bundle install`
 
-* Services (job queues, cache servers, search engines, etc.)
+2.- Para setear valores por default en la BD se debe correr 
 
-* Deployment instructions
+`rake db:seed`
 
-* ...
-# wallet
+3.- Para ejecutar la aplicacion se usa lo siguiente
+
+`rails server`
+
+Una vez que se haya levantado el proyecto se podra acceder a la direccion
+
+http://localhost:3000
